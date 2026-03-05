@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	tests		# build with tests
 %bcond_without	webengine	# build without webengine
-%define		kdeappsver	25.12.2
+%define		kdeappsver	25.12.3
 %define		kframever	5.94.0
 %define		qtver		5.15.2
 %define		kaname		ktorrent
@@ -13,12 +13,12 @@ Summary:	Native KDE BitTorrent client
 Summary(de.UTF-8):	Ein nativer KDE BitTorrent Klient
 Summary(pl.UTF-8):	Natywny klient BitTorrenta dla KDE
 Name:		ka6-%{kaname}
-Version:	25.12.2
+Version:	25.12.3
 Release:	1
 License:	GPL v2+/LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	e22d10c78053d924a7d8cb3b2cb8f9ef
+# Source0-md5:	be7bb583aba2197a131fb5fc0041508f
 URL:		http://www.kde.org/
 BuildRequires:	Qt6Core-devel >= %{qtver}
 BuildRequires:	Qt6DBus-devel >= %{qtver}
@@ -71,8 +71,8 @@ BuildRequires:	pkgconfig
 BuildRequires:	taglib-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-Requires(post,postun):	desktop-file-utils
 BuildRequires:	zlib-devel
+Requires:	%{name}-data = %{version}-%{release}
 %requires_eq_to Qt6Core Qt6Core-devel
 Obsoletes:	ka5-%{kaname} < %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -110,6 +110,21 @@ Główne cechy to:
   nawet dodać własną
 - trackery UDP
 
+%package data
+Summary:	Data files for %{kaname}
+Summary(pl.UTF-8):	Dane dla %{kaname}
+Group:		X11/Applications
+Requires(post,postun):	desktop-file-utils
+Obsoletes:	ka5-%{kaname}-data < 24.12.0
+BuildArch:	noarch
+
+%description data
+Data files for %{kaname}.
+
+%description data -l pl.UTF-8
+Dane dla %{kaname}.
+
+
 %prep
 %setup -q -n %{kaname}-%{version}
 
@@ -138,13 +153,17 @@ rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/ldconfig
+
+%post data
 %update_desktop_database_post
 
 %postun
 /sbin/ldconfig
+
+%postun data
 %update_desktop_database_postun
 
-%files -f %{kaname}.lang
+%files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/ktmagnetdownloader
 %attr(755,root,root) %{_bindir}/ktorrent
@@ -165,6 +184,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/32x32/actions/kt-remove-feeds.png
 %{_iconsdir}/hicolor/32x32/actions/kt-remove-filters.png
 %endif
+%{?with_webengine:%{_datadir}/ktorrent}
+%dir %{_libdir}/qt6/plugins/ktorrent_plugins
+%{_libdir}/qt6/plugins/ktorrent_plugins/BandwidthSchedulerPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/DownloadOrderPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/IPFilterPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/InfoWidgetPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/LogViewerPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/MagnetGeneratorPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/MediaPlayerPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/ScanFolderPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/ScanForLostFilesPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/ShutdownPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/StatsPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/UPnPPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/ZeroconfPlugin.so
+%if %{with webengine}
+%{_libdir}/qt6/plugins/ktorrent_plugins/SearchPlugin.so
+%{_libdir}/qt6/plugins/ktorrent_plugins/SyndicationPlugin.so
+%endif
+
+%files data -f %{kaname}.lang
+%defattr(644,root,root,755)
 %{_desktopdir}/org.kde.ktorrent.desktop
 %{_iconsdir}/hicolor/128x128/apps/ktorrent.png
 %{_iconsdir}/hicolor/16x16/actions/kt-stop-all.png
@@ -225,24 +266,5 @@ rm -rf $RPM_BUILD_ROOT
 %{_iconsdir}/hicolor/scalable/actions/kt-set-max-upload-speed.svgz
 %{_iconsdir}/hicolor/scalable/actions/kt-speed-limits.svgz
 %{_datadir}/knotifications6/ktorrent.notifyrc
-%{?with_webengine:%{_datadir}/ktorrent}
 %{_datadir}/kxmlgui5/ktorrent
 %{_datadir}/metainfo/org.kde.ktorrent.appdata.xml
-%dir %{_libdir}/qt6/plugins/ktorrent_plugins
-%{_libdir}/qt6/plugins/ktorrent_plugins/BandwidthSchedulerPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/DownloadOrderPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/IPFilterPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/InfoWidgetPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/LogViewerPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/MagnetGeneratorPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/MediaPlayerPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/ScanFolderPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/ScanForLostFilesPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/ShutdownPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/StatsPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/UPnPPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/ZeroconfPlugin.so
-%if %{with webengine}
-%{_libdir}/qt6/plugins/ktorrent_plugins/SearchPlugin.so
-%{_libdir}/qt6/plugins/ktorrent_plugins/SyndicationPlugin.so
-%endif
