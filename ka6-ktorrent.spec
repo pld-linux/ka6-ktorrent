@@ -3,8 +3,8 @@
 %bcond_with	tests		# build with tests
 %bcond_without	webengine	# build without webengine
 %define		kdeappsver	26.08.0
-%define		kframever	5.94.0
-%define		qtver		5.15.2
+%define		kframever	5.240.0
+%define		qtver		6.7.0
 %define		kaname		ktorrent
 %ifarch x32 i686
 %undefine	with_webengine
@@ -23,23 +23,20 @@ URL:		http://www.kde.org/
 BuildRequires:	Qt6Core-devel >= %{qtver}
 BuildRequires:	Qt6DBus-devel >= %{qtver}
 BuildRequires:	Qt6Gui-devel >= %{qtver}
-BuildRequires:	Qt6Network >= %{qtver}
-BuildRequires:	Qt6Positioning-devel >= %{qtver}
-BuildRequires:	Qt6PrintSupport-devel >= %{qtver}
-BuildRequires:	Qt6Qml-devel >= %{qtver}
-BuildRequires:	Qt6Quick-devel >= %{qtver}
-BuildRequires:	Qt6Test-devel >= %{qtver}
-%{?with_webengine:BuildRequires:	Qt6WebChannel-devel >= %{qtver}}
+BuildRequires:	Qt6Multimedia-devel >= %{qtver}
+BuildRequires:	Qt6MultimediaWidgets-devel >= %{qtver}
+BuildRequires:	Qt6Network-devel >= %{qtver}
+BuildRequires:	Qt6Qt5Compat-devel >= %{qtver}
+%{?with_tests:BuildRequires:	Qt6Test-devel >= %{qtver}}
 %{?with_webengine:BuildRequires:	Qt6WebEngine-devel >= %{qtver}}
-BuildRequires:	Qt6Widgets-devel
-BuildRequires:	boost-devel
-BuildRequires:	gettext-devel
-BuildRequires:	ka6-libktorrent-devel >= 21.04.1
+BuildRequires:	Qt6Widgets-devel >= %{qtver}
+BuildRequires:	boost-devel >= 1.71.0
+BuildRequires:	cmake >= 3.16
+BuildRequires:	gettext-tools
+BuildRequires:	ka6-libktorrent-devel >= 26.07.70
 BuildRequires:	kf6-extra-cmake-modules >= %{kframever}
 BuildRequires:	kf6-karchive-devel >= %{kframever}
-BuildRequires:	kf6-kauth-devel >= %{kframever}
 BuildRequires:	kf6-kcmutils-devel >= %{kframever}
-BuildRequires:	kf6-kcodecs-devel >= %{kframever}
 BuildRequires:	kf6-kcompletion-devel >= %{kframever}
 BuildRequires:	kf6-kconfig-devel >= %{kframever}
 BuildRequires:	kf6-kconfigwidgets-devel >= %{kframever}
@@ -48,30 +45,31 @@ BuildRequires:	kf6-kcrash-devel >= %{kframever}
 BuildRequires:	kf6-kdbusaddons-devel >= %{kframever}
 BuildRequires:	kf6-kdnssd-devel >= %{kframever}
 BuildRequires:	kf6-kdoctools-devel >= %{kframever}
+BuildRequires:	kf6-kglobalaccel-devel >= %{kframever}
+BuildRequires:	kf6-kguiaddons-devel >= %{kframever}
 BuildRequires:	kf6-ki18n-devel >= %{kframever}
 BuildRequires:	kf6-kiconthemes-devel >= %{kframever}
 BuildRequires:	kf6-kio-devel >= %{kframever}
 BuildRequires:	kf6-kitemviews-devel >= %{kframever}
-BuildRequires:	kf6-kjobwidgets-devel >= %{kframever}
 BuildRequires:	kf6-knotifications-devel >= %{kframever}
 BuildRequires:	kf6-knotifyconfig-devel >= %{kframever}
 BuildRequires:	kf6-kparts-devel >= %{kframever}
 BuildRequires:	kf6-kplotting-devel >= %{kframever}
-BuildRequires:	kf6-kservice-devel >= %{kframever}
+BuildRequires:	kf6-kstatusnotifieritem-devel >= %{kframever}
 BuildRequires:	kf6-ktextwidgets-devel >= %{kframever}
 BuildRequires:	kf6-kwidgetsaddons-devel >= %{kframever}
 BuildRequires:	kf6-kwindowsystem-devel >= %{kframever}
 BuildRequires:	kf6-kxmlgui-devel >= %{kframever}
-BuildRequires:	kf6-solid-devel >= %{kframever}
-BuildRequires:	kf6-sonnet-devel >= %{kframever}
 BuildRequires:	kf6-syndication-devel >= %{kframever}
-BuildRequires:	kp6-plasma-workspace-devel
-BuildRequires:	phonon-qt6-devel
+BuildRequires:	libmaxminddb-devel
+BuildRequires:	libstdc++-devel >= 6:8
+BuildRequires:	ninja
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
+BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	taglib-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
-BuildRequires:	zlib-devel
 Requires:	%{name}-data = %{version}-%{release}
 %requires_eq_to Qt6Core Qt6Core-devel
 Obsoletes:	ka5-%{kaname} < %{version}
