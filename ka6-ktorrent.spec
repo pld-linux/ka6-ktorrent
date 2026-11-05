@@ -2,7 +2,7 @@
 # Conditional build:
 %bcond_with	tests		# build with tests
 %bcond_without	webengine	# build without webengine
-%define		kdeappsver	26.08.2
+%define		kdeappsver	26.08.3
 %define		kframever	5.240.0
 %define		qtver		6.7.0
 %define		kaname		ktorrent
@@ -13,12 +13,12 @@ Summary:	Native KDE BitTorrent client
 Summary(de.UTF-8):	Ein nativer KDE BitTorrent Klient
 Summary(pl.UTF-8):	Natywny klient BitTorrenta dla KDE
 Name:		ka6-%{kaname}
-Version:	26.08.2
+Version:	26.08.3
 Release:	1
 License:	GPL v2+/LGPL v2.1+
 Group:		X11/Libraries
 Source0:	https://download.kde.org/stable/release-service/%{kdeappsver}/src/%{kaname}-%{version}.tar.xz
-# Source0-md5:	120595a9f8af0f7b15a81c39de7d7f0a
+# Source0-md5:	ea61294e7ff3e169657512c99e55ae9b
 URL:		http://www.kde.org/
 BuildRequires:	Qt6Core-devel >= %{qtver}
 BuildRequires:	Qt6DBus-devel >= %{qtver}
